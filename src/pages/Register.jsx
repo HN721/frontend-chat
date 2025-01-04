@@ -6,10 +6,51 @@ import {
   Input,
   VStack,
   Text,
+  useToast,
 } from "@chakra-ui/react";
-import { Link } from "react-router-dom";
+import axios from "axios";
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 
 const Register = () => {
+  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+  const toast = useToast();
+  const navigate = useNavigate();
+
+  const handleRegister = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    try {
+      const { data } = await axios.post(
+        "http://localhost:5000/api/users/register",
+        {
+          username,
+          email,
+          password,
+        }
+      );
+      //save user
+      toast({
+        title: "Register successful",
+        status: "success",
+        duration: 5000,
+        isClosable: true,
+      });
+      navigate("/login");
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: error.response.data,
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      });
+      setLoading(false);
+    }
+  };
   return (
     <Box
       w="100%"
@@ -82,6 +123,8 @@ const Register = () => {
               </FormLabel>
               <Input
                 type="text"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
                 size="lg"
                 bg="gray.50"
                 borderColor="gray.200"
@@ -98,6 +141,8 @@ const Register = () => {
               <Input
                 type="email"
                 size="lg"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 bg="gray.50"
                 borderColor="gray.200"
                 _hover={{ borderColor: "indigo.500" }}
@@ -114,6 +159,8 @@ const Register = () => {
                 type="password"
                 size="lg"
                 bg="gray.50"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
                 borderColor="gray.200"
                 _hover={{ borderColor: "indigo.500" }}
                 _focus={{ borderColor: "indigo.500" }}
@@ -123,6 +170,8 @@ const Register = () => {
 
             <Button
               colorScheme="purple"
+              onClick={handleRegister}
+              isLoading={loading}
               width="100%"
               transform="auto"
               _hover={{ scale: 1.05 }}

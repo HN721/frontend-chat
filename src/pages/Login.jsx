@@ -6,15 +6,51 @@ import {
   Input,
   VStack,
   Text,
+  useToast,
 } from "@chakra-ui/react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { FiLogIn } from "react-icons/fi";
 import { useState } from "react";
+import axios from "axios";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+  const toast = useToast();
+  const navigate = useNavigate();
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    try {
+      const { data } = await axios.post(
+        "http://localhost:5000/api/users/login",
+        {
+          email,
+          password,
+        }
+      );
+      //save user
+      localStorage.setItem("userInfo", JSON.stringify(data));
+      toast({
+        title: "Login successful",
+        status: "success",
+        duration: 5000,
+        isClosable: true,
+      });
+      navigate("/chat");
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: error.response.data.message,
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      });
+      setLoading(false);
+    }
+  };
   return (
     <Box
       w="100%"
@@ -96,6 +132,8 @@ const Login = () => {
                 placeholder="Enter your email"
                 size="lg"
                 bg="gray.50"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 borderColor="gray.200"
                 _hover={{ borderColor: "blue.500" }}
                 _focus={{ borderColor: "blue.500" }}
@@ -111,6 +149,8 @@ const Login = () => {
                 placeholder="Enter your password"
                 size="lg"
                 bg="gray.50"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
                 borderColor="gray.200"
                 _hover={{ borderColor: "blue.500" }}
                 _focus={{ borderColor: "blue.500" }}
@@ -118,6 +158,8 @@ const Login = () => {
             </FormControl>
 
             <Button
+              onClick={handleSubmit}
+              isLoading={loading}
               colorScheme="blue"
               width="100%"
               size="lg"
