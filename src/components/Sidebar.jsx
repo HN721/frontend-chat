@@ -19,6 +19,7 @@ import {
   Badge,
   Tooltip,
 } from "@chakra-ui/react";
+import axios from "axios";
 import { useEffect, useState } from "react";
 import { FiLogOut, FiPlus, FiUsers } from "react-icons/fi";
 import { Link } from "react-router-dom";
@@ -29,6 +30,8 @@ const Sidebar = () => {
   const [newGroupDescription, setNewGroupDescription] = useState("");
   const toast = useToast();
   const [isAdmin, setIsAdmin] = useState(false);
+  const checkToken = JSON.parse(localStorage.getItem("userInfo"));
+
   //check if login user is an admin
   useEffect(() => {
     checkAdmin();
@@ -39,6 +42,26 @@ const Sidebar = () => {
   };
   console.log(isAdmin);
   // Sample groups data
+  useEffect(() => {
+    const fetchGroups = async () => {
+      const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+      console.log(userInfo?.user?.token);
+
+      try {
+        const res = await axios.get("http://localhost:5000/api/group/get-all", {
+          headers: {
+            Authorization: `Bearer ${userInfo?.user?.token}`,
+          },
+        });
+        console.log(res.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchGroups();
+  }, []);
+  console.log(checkToken);
+
   const groups = [
     {
       id: 1,
