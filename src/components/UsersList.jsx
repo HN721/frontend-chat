@@ -11,6 +11,7 @@ import {
 import { FiUsers, FiCircle } from "react-icons/fi";
 
 const UsersList = ({ users }) => {
+  console.log(users);
   return (
     <Box
       h="100%"

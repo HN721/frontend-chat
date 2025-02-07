@@ -139,7 +139,7 @@ export default function LandingPage() {
               </Text>
               <br />
               <Text as="span" color="blue.400">
-                Chat App
+                Sman Chat App
               </Text>
             </Heading>
             <Text color="gray.500" fontSize="xl">
