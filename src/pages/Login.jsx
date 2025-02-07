@@ -25,7 +25,7 @@ const Login = () => {
     setLoading(true);
     try {
       const { data } = await axios.post(
-        "http://localhost:5000/api/users/login",
+        "https://backend-chat-rose.vercel.app/api/users/login",
         {
           email,
           password,

@@ -49,11 +49,14 @@ const Sidebar = ({ setSelectedGroup }) => {
     const userInfo = JSON.parse(localStorage.getItem("userInfo"));
 
     try {
-      const res = await axios.get("http://localhost:5000/api/group/get-all", {
-        headers: {
-          Authorization: `Bearer ${userInfo?.user?.token}`,
-        },
-      });
+      const res = await axios.get(
+        "https://backend-chat-rose.vercel.app/api/group/get-all",
+        {
+          headers: {
+            Authorization: `Bearer ${userInfo?.user?.token}`,
+          },
+        }
+      );
       setGroups(res.data.groups);
       // get user groups
       const userGroupId = res.data.groups
@@ -74,7 +77,7 @@ const Sidebar = ({ setSelectedGroup }) => {
 
     try {
       const res = await axios.post(
-        "http://localhost:5000/api/group/create",
+        "https://backend-chat-rose.vercel.app/api/group/create",
         {
           headers: {
             Authorization: `Bearer ${userInfo?.user?.token}`,
@@ -109,7 +112,7 @@ const Sidebar = ({ setSelectedGroup }) => {
     const userInfo = JSON.parse(localStorage.getItem("userInfo"));
     try {
       const res = await axios.post(
-        `http://localhost:5000/api/group/${groupId}/join`,
+        `https://backend-chat-rose.vercel.app/api/group/${groupId}/join`,
         {},
         {
           headers: {
@@ -140,7 +143,7 @@ const Sidebar = ({ setSelectedGroup }) => {
     const userInfo = JSON.parse(localStorage.getItem("userInfo"));
     try {
       const res = await axios.post(
-        `http://localhost:5000/api/group/${groupId}/leave`,
+        `https://backend-chat-rose.vercel.app/api/group/${groupId}/leave`,
         {},
         {
           headers: {

@@ -25,7 +25,7 @@ const Register = () => {
     setLoading(true);
     try {
       const { data } = await axios.post(
-        "http://localhost:5000/api/users/register",
+        "https://backend-chat-rose.vercel.app/api/users/register",
         {
           username,
           email,

@@ -91,7 +91,7 @@ const ChatArea = ({ selectedGroup, socket }) => {
     const token = currentUser?.user?.token;
     try {
       const { data } = await axios.get(
-        `http://localhost:5000/api/messages/${selectedGroup?._id}`,
+        `https://backend-chat-rose.vercel.app/api/messages/${selectedGroup?._id}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -110,7 +110,7 @@ const ChatArea = ({ selectedGroup, socket }) => {
     try {
       const token = currentUser?.user?.token;
       const { data } = await axios.post(
-        "http://localhost:5000/api/messages",
+        "https://backend-chat-rose.vercel.app/api/messages",
         {
           content: newMessage,
           groupId: selectedGroup._id,
